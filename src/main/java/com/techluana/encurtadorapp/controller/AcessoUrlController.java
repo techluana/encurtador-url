@@ -15,16 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techluana.encurtadorapp.entity.Url;
 import com.techluana.encurtadorapp.service.UrlService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 @RestController
-@RequestMapping("api")
+@RequestMapping("")
 public class AcessoUrlController {
 
 	@Autowired
 	private UrlService service;
 
-	@GetMapping(value="/{new}")
+	@ApiResponse(responseCode = "303", description = "Redireciona para URL salva a partir do parâmetro 'new_url'")
+	@ApiResponse(responseCode = "404", description = "URL não encontrada na base de dados")
+	@ApiResponse(responseCode = "410", description = "URL expirada")
+	@GetMapping(value="/{new_url}")
 	@ResponseBody
-	public ResponseEntity<Object> getRedirectUrl(@PathVariable(name = "new", required = true) String url) throws Exception {
+	public ResponseEntity<Object> getRedirectUrl(@PathVariable(name = "new_url", required = true) String url) throws Exception {
 		Url urlValida;
 		try {
 			urlValida = service.getUrlValida(url);

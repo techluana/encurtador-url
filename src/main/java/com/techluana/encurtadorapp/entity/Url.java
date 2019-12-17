@@ -27,6 +27,7 @@ public class Url {
 	private Long id;
 
 	@URL(message="URL inválida")
+	@NotBlank(message="Necessário informar a URL")
 	@Column(name = "url", nullable = false)
 	private String url;
 

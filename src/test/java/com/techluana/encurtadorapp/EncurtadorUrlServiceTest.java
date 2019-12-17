@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -105,15 +106,15 @@ class EncurtadorUrlServiceTest extends EncurtadorAppApplicationTests {
 	}
 
 	@Test
-	public void testeSalvarUrlValida() {
+	public void testeSalvarUrlInvalida_UrlEmBranco() {
 		Url url = new Url();
-		url.setUrl("http://google.com");
+		url.setUrl("");
 		url.setNovaUrl("TFF5646rFF");
 		url.setTempoExpiracao(20l);
 		url.setTipoExpiracao(TipoExpiracao.MINUTOS);
 		url.setDataInclusao(LocalDateTime.now());
 		Set<ConstraintViolation<Url>> violations = validator.validate(url);
-		assertTrue(violations.isEmpty());
+		assertTrue(!violations.isEmpty());
 	}
 	
 	@Test
@@ -129,6 +130,30 @@ class EncurtadorUrlServiceTest extends EncurtadorAppApplicationTests {
 		Assert.assertNotNull(urlSalva.getDataInclusao());
 		
 		LocalDateTime timeExpiracao = urlSalva.getDataInclusao().plusMinutes(30l);
+		Assert.assertEquals(timeExpiracao, urlSalva.getDataExpiracao());
+	}
+	
+	@org.junit.Test(expected=ConstraintViolationException.class)
+	public void testeSalvarInvalido_urlEmBranco() {
+		Url url = new Url();
+		url.setUrl("");
+		url.setTempoExpiracao(30l);
+		url.setTipoExpiracao(TipoExpiracao.MINUTOS);
+		
+		service.salvar(url);
+	}
+	
+	@Test
+	public void testeSalvarValido_semDadosExpiracao() {
+		Url url = new Url();
+		url.setUrl("http://google.com");
+		
+		Url urlSalva = service.salvar(url);
+		Assert.assertNotNull(urlSalva);
+		Assert.assertNotNull(urlSalva.getNovaUrl());
+		Assert.assertNotNull(urlSalva.getDataInclusao());
+		
+		LocalDateTime timeExpiracao = urlSalva.getDataInclusao().plusHours(12l);
 		Assert.assertEquals(timeExpiracao, urlSalva.getDataExpiracao());
 	}
 }
