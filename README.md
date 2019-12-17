@@ -10,8 +10,10 @@
 
 ### Configurar
 
+Criar um database na sua instalação Postgres
+
 Ajustar variáveis do arquivo application.properties 
-<pre><code>spring.datasource.url=${ENDERECO_BD}/encurtador-url
+<pre><code>spring.datasource.url=${ENDERECO_BD}/${NOME_BD_CRIADO}
 spring.datasource.username=${USUARIO_BD}
 spring.datasource.password=${SENHA_BD}</code></pre>
 
