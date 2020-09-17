@@ -2,6 +2,7 @@ package com.techluana.encurtadorapp.controller;
 
 import java.net.URI;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,8 @@ public class AcessoUrlController {
 
 	@Autowired
 	private UrlService service;
+	
+	private static Logger log = Logger.getLogger(AcessoUrlController.class);
 
 	@ApiResponse(responseCode = "303", description = "Redireciona para URL salva a partir do parâmetro 'new_url'")
 	@ApiResponse(responseCode = "404", description = "URL não encontrada na base de dados")
@@ -34,6 +37,7 @@ public class AcessoUrlController {
 		try {
 			urlValida = service.getUrlValida(url);
 		}catch (Exception e) {
+			log.error(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		

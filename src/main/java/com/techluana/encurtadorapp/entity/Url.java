@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -14,11 +15,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.URL;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.techluana.encurtadorapp.enums.TipoExpiracao;
 
 @Entity
 @Table(name = "url")
+@EntityListeners(AuditingEntityListener.class)
 public class Url {
 
 	@Id
@@ -44,8 +48,8 @@ public class Url {
 	@Column(name = "time_expiration", nullable = false)
 	private Long tempoExpiracao;
 
-	@NotNull(message="necessário informar a data de inclusão do link")
 	@Column(name = "date_create", nullable = false)
+	@CreatedDate
 	private LocalDateTime dataInclusao;
 
 	public Url() {

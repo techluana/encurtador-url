@@ -44,7 +44,6 @@ class EncurtadorUrlServiceTest extends EncurtadorAppApplicationTests {
 		url.setNovaUrl("TFF5646rFF");
 		url.setTempoExpiracao(20l);
 		url.setTipoExpiracao(TipoExpiracao.MINUTOS);
-		url.setDataInclusao(LocalDateTime.now());
 		Set<ConstraintViolation<Url>> violations = validator.validate(url);
 		assertFalse(violations.isEmpty());
 	}
@@ -56,7 +55,6 @@ class EncurtadorUrlServiceTest extends EncurtadorAppApplicationTests {
 		url.setNovaUrl("TFF5646rFF");
 		url.setTempoExpiracao(20l);
 		url.setTipoExpiracao(TipoExpiracao.MINUTOS);
-		url.setDataInclusao(LocalDateTime.now());
 		Set<ConstraintViolation<Url>> violations = validator.validate(url);
 		assertFalse(violations.isEmpty());
 	}
@@ -67,7 +65,6 @@ class EncurtadorUrlServiceTest extends EncurtadorAppApplicationTests {
 		url.setUrl("http://google.com");
 		url.setTempoExpiracao(20l);
 		url.setTipoExpiracao(TipoExpiracao.MINUTOS);
-		url.setDataInclusao(LocalDateTime.now());
 		Set<ConstraintViolation<Url>> violations = validator.validate(url);
 		assertFalse(violations.isEmpty());
 	}
@@ -78,7 +75,6 @@ class EncurtadorUrlServiceTest extends EncurtadorAppApplicationTests {
 		url.setUrl("http://google.com");
 		url.setNovaUrl("TFF5646rFF");
 		url.setTipoExpiracao(TipoExpiracao.MINUTOS);
-		url.setDataInclusao(LocalDateTime.now());
 		Set<ConstraintViolation<Url>> violations = validator.validate(url);
 		assertFalse(violations.isEmpty());
 	}
@@ -89,18 +85,6 @@ class EncurtadorUrlServiceTest extends EncurtadorAppApplicationTests {
 		url.setUrl("http://google.com");
 		url.setNovaUrl("TFF5646rFF");
 		url.setTempoExpiracao(20l);
-		url.setDataInclusao(LocalDateTime.now());
-		Set<ConstraintViolation<Url>> violations = validator.validate(url);
-		assertFalse(violations.isEmpty());
-	}
-	
-	@Test
-	public void testeSalvarUrlInvalida_semDataInclusao() {
-		Url url = new Url();
-		url.setUrl("http://google.com");
-		url.setNovaUrl("TFF5646rFF");
-		url.setTempoExpiracao(20l);
-		url.setTipoExpiracao(TipoExpiracao.MINUTOS);
 		Set<ConstraintViolation<Url>> violations = validator.validate(url);
 		assertFalse(violations.isEmpty());
 	}
@@ -112,7 +96,6 @@ class EncurtadorUrlServiceTest extends EncurtadorAppApplicationTests {
 		url.setNovaUrl("TFF5646rFF");
 		url.setTempoExpiracao(20l);
 		url.setTipoExpiracao(TipoExpiracao.MINUTOS);
-		url.setDataInclusao(LocalDateTime.now());
 		Set<ConstraintViolation<Url>> violations = validator.validate(url);
 		assertTrue(!violations.isEmpty());
 	}

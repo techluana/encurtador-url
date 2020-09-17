@@ -1,11 +1,12 @@
 package com.techluana.encurtadorapp.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.techluana.encurtadorapp.entity.Url;
 import com.techluana.encurtadorapp.repository.UrlRepository;
@@ -19,20 +20,16 @@ public class UrlServiceImpl implements UrlService {
 
 	@Autowired
 	private VariaveisAplicacaoUtils variaveisApp;
+	
+	private static Logger log = Logger.getLogger(VariaveisAplicacaoUtils.class);
 
 	@Override
 	public Url getUrlValida(String url) throws Exception {
 		List<Url> urlsExistentes = repository.getUrls(url);
-		if (null == urlsExistentes) {
+		if (null == urlsExistentes || CollectionUtils.isEmpty(urlsExistentes)) {
 			throw new Exception("URL não existente");
 		}
-		for (Url urlExistente : urlsExistentes) {
-			if (urlExistente.isUrlValida()) {
-				return urlExistente;
-			}
-		}
-
-		return null;
+		return urlsExistentes.stream().filter(umaUrl -> umaUrl.isUrlValida()).findFirst().orElse(null);
 	}
 
 	@Override
@@ -45,20 +42,17 @@ public class UrlServiceImpl implements UrlService {
 				urlValidaExistente = getUrlValida(newURL);
 			} catch (Exception e) {
 				urlValidaExistente = null;
+				log.warn(e.getMessage());
 			}
 		} while (urlValidaExistente != null);
 		urlSalvar.setNovaUrl(newURL);
 
-		/*if (!urlSalvar.getUrl().contains("http")) {
-			urlSalvar.setUrl("http://".concat(urlSalvar.getUrl()));
-		}*/
 		if (null == urlSalvar.getTipoExpiracao()) {
 			urlSalvar.setTipoExpiracao(variaveisApp.getTipoExpiracaoDefault());
 		}
 		if (null == urlSalvar.getTempoExpiracao()) {
 			urlSalvar.setTempoExpiracao(variaveisApp.getTempoExpiracaoDefault());
 		}
-		urlSalvar.setDataInclusao(LocalDateTime.now());
 		return repository.save(urlSalvar);
 	}
 
