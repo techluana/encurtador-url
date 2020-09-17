@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  db:
+    build:
+      dockerfile: Dockerfile
+      context: ./db
+    image: 'tech-luana/postgres'
+    ports:
+      - '5432:5432'
+    environment:
+      - 'POSTGRES_DB=encurtador_url'
+      - 'POSTGRES_PASSWORD=@dm!n'
+    volumes:
+     - '/data'
+  
+  api:
+    build: .
+    image: 'tech-luana/encurtador-app:latest'
+    ports:
+      - '8080:8080'
+    links:
+      - 'db:psql'

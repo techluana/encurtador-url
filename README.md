@@ -6,18 +6,16 @@
 
 * Java 8
 * Maven
-* PostgreSQL
+* Docker
+* Docker compose
 
-### Configurar
+### Construir e Instalar
 
-Ajustar variáveis do arquivo application.properties 
-<pre><code>spring.datasource.url=${ENDERECO_BD}/encurtador-url
-spring.datasource.username=${USUARIO_BD}
-spring.datasource.password=${SENHA_BD}</code></pre>
+* Iniciar o PowerShell ou similar
+* Navegar até a pasta raiz do projeto
+* Executar o script build-package-run.ps1 com o comando
 
-### Instalar
-
-Rodar como aplicação Java a classe EncurtadorAppApplication.java
+<pre><code>./build-package-run.ps1</code></pre>
 
 ### Especificação
 
